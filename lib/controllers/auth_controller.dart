@@ -1,0 +1,20 @@
+import 'package:get/get.dart';
+import 'package:flutter_team_03_02/routes/routes.dart';
+
+class AuthController extends GetxController {
+  var isLoggedIn = false.obs;
+
+  void login(String username, String password) {
+    if (username == "aldikky" && password == "alfian") {
+      isLoggedIn.value = true;
+      Get.offAllNamed(AppRoutes.dashboard);
+    } else {
+      Get.snackbar("Login Failed", "Username / Password salah");
+    }
+  }
+
+  void logout() {
+    isLoggedIn.value = false;
+    Get.offAllNamed(AppRoutes.login);
+  }
+}
