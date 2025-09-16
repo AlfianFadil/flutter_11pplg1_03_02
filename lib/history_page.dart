@@ -11,27 +11,49 @@ class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("History")),
-      body: Obx(() {
-        if (todoController.history.isEmpty) {
-          return const Center(
-            child: Text(
-              "Belum ada todo yang selesai.",
-              style: TextStyle(color: Colors.grey),
+      body: Column(
+        children: [
+          // 🔹 Block warna untuk judul "History"
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            color: Colors.blueAccent, // ganti sesuai tema kamu
+            child: const Text(
+              "History",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
-          );
-        }
-        return ListView.builder(
-          itemCount: todoController.history.length,
-          itemBuilder: (context, index) {
-            final todo = todoController.history[index];
-            return TodoCard(
-              todo: todo,
-              onDelete: () => todoController.removeHistoryAt(index),
-            );
-          },
-        );
-      }),
+          ),
+
+          // 🔹 Isi utama halaman
+          Expanded(
+            child: Obx(() {
+              if (todoController.history.isEmpty) {
+                return const Center(
+                  child: Text(
+                    "Belum ada todo yang selesai.",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                );
+              }
+              return ListView.builder(
+                itemCount: todoController.history.length,
+                itemBuilder: (context, index) {
+                  final todo = todoController.history[index];
+                  return TodoCard(
+                    todo: todo,
+                    onDelete: () => todoController.removeHistoryAt(index),
+                  );
+                },
+              );
+            }),
+          ),
+        ],
+      ),
     );
   }
 }

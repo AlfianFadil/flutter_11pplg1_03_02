@@ -10,32 +10,55 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Home")),
-      body: SafeArea(
-        child: Obx(() {
-          if (todoController.todos.isEmpty) {
-            return const Center(
-              child: Text(
-                "Belum ada todo.\nTambahkan todo baru dengan tombol +",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey),
+      body: Column(
+        children: [
+          // 🔹 Block warna untuk judul "Home"
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            color: Colors.blueAccent, // ganti sesuai tema desain kamu
+            child: const Text(
+              "Home",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
-            );
-          }
-          return ListView.builder(
-            itemCount: todoController.todos.length,
-            itemBuilder: (context, index) {
-              final todo = todoController.todos[index];
-              return TodoCard(
-                todo: todo,
-                onDone: () => todoController.markAsDone(index),
-                onDelete: () =>
-                    todoController.removeTodoAt(index), // tambahin hapus
-              );
-            },
-          );
-        }),
+            ),
+          ),
+
+          // 🔹 Isi utama halaman
+          Expanded(
+            child: SafeArea(
+              child: Obx(() {
+                if (todoController.todos.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      "Belum ada todo.\nTambahkan todo baru dengan tombol +",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: todoController.todos.length,
+                  itemBuilder: (context, index) {
+                    final todo = todoController.todos[index];
+                    return TodoCard(
+                      todo: todo,
+                      onDone: () => todoController.markAsDone(index),
+                      onDelete: () => todoController.removeTodoAt(index),
+                    );
+                  },
+                );
+              }),
+            ),
+          ),
+        ],
       ),
+
+      // 🔹 Tombol tambah todo
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed(AppRoutes.addTodo),
         child: const Icon(Icons.add),

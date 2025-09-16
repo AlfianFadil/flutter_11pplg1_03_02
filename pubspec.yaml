@@ -60,6 +60,9 @@ flutter:
 
   assets:
    - assets/image/spongebob.jpg
+   - assets/image/profil.jpg
+   - assets/image/login.png
+   - assets/image/giga.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

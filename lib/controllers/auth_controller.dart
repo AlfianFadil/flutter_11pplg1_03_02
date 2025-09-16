@@ -5,7 +5,7 @@ class AuthController extends GetxController {
   var isLoggedIn = false.obs;
 
   void login(String username, String password) {
-    if (username == "aldikky" && password == "alfian") {
+    if (username == "admin" && password == "admin") {
       isLoggedIn.value = true;
       Get.offAllNamed(AppRoutes.dashboard);
     } else {

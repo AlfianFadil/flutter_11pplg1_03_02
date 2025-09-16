@@ -16,76 +16,155 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController controllerPassword = TextEditingController();
   String statusLogin = "login status";
 
+  bool isPasswordHidden = true; //  untuk toggle hide/show
+
+  void _showConfirmDialog() {
+    Get.defaultDialog(
+      title: "Konfirmasi",
+      middleText: "Masuk sebagai \"${controllerUsername.text}\"?",
+      textCancel: "No",
+      textConfirm: "Yes",
+      confirmTextColor: const Color.fromARGB(255, 26, 133, 255),
+      onCancel: () {}, // jika No ditekan
+      onConfirm: () {
+        Get.back(); // tutup dialog
+
+        // ✅ Snackbar berhasil login
+        Get.snackbar(
+          "Login Success",
+          "Berhasil login sebagai ${controllerUsername.text}",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor:const Color.fromRGBO(76, 175, 80, 0.2), 
+          duration: const Duration(seconds: 2), // hilang otomatis 2 detik
+        );
+
+        Get.offAllNamed(AppRoutes.dashboard); // lanjut ke dashboard
+      },
+      barrierDismissible: false, // tidak bisa klik luar dialog
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Login Page")),
-      body: Container(
-        margin: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Welcome to my todolist-app",
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
+      body: Column(
+        children: [
+          // 🔹 Block warna hijau di atas
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 24),
+            color: Colors.lightBlue[700],
+            child: const Center(
+              child: Text(
+                "Login Page",
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
-            const Text("Please login using your username and password"),
-            const SizedBox(height: 15),
+          ),
 
-            // Image
-            Center(
-              child: Image.asset(
-                'assets/image/spongebob.jpg',
-                width: 100,
-                height: 100,
+          // 🔹 Isi body
+          Expanded(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Card(
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          "Welcome to my todolist-app",
+                          style: TextStyle(
+                            fontSize: 22,
+                            color: Color.fromARGB(255, 1, 225, 255),
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          "Please login using your username and password",
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 20),
+
+                        // Image
+                        Image.asset(
+                          'assets/image/login.png',
+                          width: 100,
+                          height: 100,
+                        ),
+
+                        const SizedBox(height: 25),
+
+                        // Username input
+                        MyTextField(
+                          textEditingController: controllerUsername,
+                          labelText: "Username",
+                        ),
+
+                        const SizedBox(height: 25),
+
+                        // Password input dengan show/hide
+                        TextField(
+                          controller: controllerPassword,
+                          obscureText: isPasswordHidden,
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            border: const OutlineInputBorder(),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                isPasswordHidden
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  isPasswordHidden = !isPasswordHidden;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 25),
+
+                        // Button Login
+                        CustomButton(
+                          text: "Login",
+                          onPressed: () {
+                            if (controllerUsername.text == "admin" &&
+                                controllerPassword.text == "admin") {
+                              // ✅ Tampilkan konfirmasi pakai GetX
+                              _showConfirmDialog();
+                            } else {
+                              Get.snackbar(
+                                "Login Failed",
+                                "Username / Password salah",
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: const Color.fromRGBO(
+                                    244, 67, 54, 0.2), // merah 20%
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-
-            const SizedBox(height: 20),
-
-            // Username input
-            MyTextField(
-              textEditingController: controllerUsername,
-              labelText: "Username",
-            ),
-
-            const SizedBox(height: 10),
-
-            // Password input
-            MyTextField(
-              textEditingController: controllerPassword,
-              labelText: "Password",
-            ),
-
-            const SizedBox(height: 25),
-
-            // Button Login
-            Center(
-              child: CustomButton(
-                text: "Login",
-                
-                onPressed: () {
-                  if (controllerUsername.text == "admin" &&
-                      controllerPassword.text == "admin") {
-                    // ✅ Pindah ke Dashboard
-                    Get.offAllNamed(AppRoutes.dashboard);
-                  } else {
-                    Get.snackbar(
-                      "Login Failed",
-                      "Username / Password salah",
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.red.withOpacity(0.2),
-                    );
-                  }
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
