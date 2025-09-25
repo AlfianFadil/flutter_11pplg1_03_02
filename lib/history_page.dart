@@ -13,11 +13,10 @@ class HistoryPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          // 🔹 Block warna untuk judul "History"
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(20),
-            color: Colors.blueAccent, // ganti sesuai tema kamu
+            color: Colors.blueAccent,
             child: const Text(
               "History",
               textAlign: TextAlign.center,
@@ -29,7 +28,6 @@ class HistoryPage extends StatelessWidget {
             ),
           ),
 
-          // 🔹 Isi utama halaman
           Expanded(
             child: Obx(() {
               if (todoController.history.isEmpty) {
@@ -40,6 +38,7 @@ class HistoryPage extends StatelessWidget {
                   ),
                 );
               }
+
               return ListView.builder(
                 itemCount: todoController.history.length,
                 itemBuilder: (context, index) {

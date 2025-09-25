@@ -6,13 +6,15 @@ class TodoController extends GetxController {
   var history = <Todo>[].obs;
 
   void addTodo(String title, String description, String category) {
-    todos.add(Todo(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      title: title,
-      description: description,
-      category: category,
-      createdAt: DateTime.now(),
-    ));
+    todos.add(
+      Todo(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        title: title,
+        description: description,
+        category: category,
+        createdAt: DateTime.now(),
+      ),
+    );
   }
 
   void removeTodoAt(int index) {
@@ -37,4 +39,7 @@ class TodoController extends GetxController {
       todos.removeAt(index);
     }
   }
+
+  void clearAllTodos() => todos.clear();
+  void clearHistory() => history.clear();
 }

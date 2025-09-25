@@ -7,16 +7,17 @@ import 'package:flutter_team_03_02/routes/routes.dart';
 class HomePage extends StatelessWidget {
   final TodoController todoController = Get.find<TodoController>();
 
+  HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          // 🔹 Block warna untuk judul "Home"
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(20),
-            color: Colors.blueAccent, // ganti sesuai tema desain kamu
+            color: Colors.blueAccent,
             child: const Text(
               "Home",
               textAlign: TextAlign.center,
@@ -28,7 +29,6 @@ class HomePage extends StatelessWidget {
             ),
           ),
 
-          // 🔹 Isi utama halaman
           Expanded(
             child: SafeArea(
               child: Obx(() {
@@ -41,6 +41,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 }
+
                 return ListView.builder(
                   itemCount: todoController.todos.length,
                   itemBuilder: (context, index) {
@@ -58,7 +59,6 @@ class HomePage extends StatelessWidget {
         ],
       ),
 
-      // 🔹 Tombol tambah todo
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed(AppRoutes.addTodo),
         child: const Icon(Icons.add),

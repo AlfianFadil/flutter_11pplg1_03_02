@@ -1,35 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_team_03_02/routes/routes.dart';
+import 'package:flutter_team_03_02/controllers/auth_controller.dart';
 
 class ProfilPage extends StatelessWidget {
-  void _showLogoutDialog() {
-    Get.defaultDialog(
-      title: "Konfirmasi Logout",
-      middleText: "Apakah kamu yakin ingin keluar?",
-      textCancel: "No",
-      textConfirm: "Yes",
-      confirmTextColor: const Color.fromARGB(255, 26, 133, 255),
-      onCancel: () {},
-      onConfirm: () {
-        Get.back();
+  final AuthController authController = Get.find<AuthController>();
 
-        // ✅ Snackbar sukses logout
-        Get.snackbar(
-          "Logout Berhasil",
-          "Anda sudah keluar",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: const Color.fromRGBO(76, 175, 80, 0.2),
-          colorText: Colors.black,
-          margin: const EdgeInsets.all(12),
-          borderRadius: 8,
-        );
-
-        Get.offAllNamed(AppRoutes.login);
-      },
-      barrierDismissible: false,
-    );
-  }
+  ProfilPage({super.key});
 
   Widget buildProfileCard(String imagePath, String name) {
     return Card(
@@ -67,10 +43,8 @@ class ProfilPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Hilangkan AppBar default → kita ganti dengan header custom
       body: Column(
         children: [
-          // 🔹 Header block warna di atas
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 30),
@@ -98,7 +72,6 @@ class ProfilPage extends StatelessWidget {
             ),
           ),
 
-          // 🔹 Isi daftar profil
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(8),
@@ -111,10 +84,9 @@ class ProfilPage extends StatelessWidget {
         ],
       ),
 
-      // Tombol logout di pojok kanan bawah
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.red,
-        onPressed: _showLogoutDialog,
+        onPressed: authController.logout,
         child: const Icon(Icons.logout, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
